@@ -25,6 +25,20 @@ public class Task {
     private boolean completed;
     private boolean archived;
     
+    
+    private String priority;
+    
+    
+    private String status;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+    		name = "task_users",
+    		joinColumns = @JoinColumn(name = "task_id"),
+    		inverseJoinColumns = @JoinColumn(name = "member_id")
+    )
+    private List<Member> members;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
     		name = "task_labels",
