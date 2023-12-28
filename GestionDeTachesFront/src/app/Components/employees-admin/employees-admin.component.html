@@ -1,0 +1,148 @@
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
+              <h5>Employees</h5>
+                <div class="pl-3 border-left btn-new">
+                  <a href="#" class="btn btn-primary" data-target="#new-user-modal" data-toggle="modal">New Employee</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- employee list -->
+    <div id="grid" class="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
+      <div class="row" >
+        <div class="col-lg-4 col-md-6" *ngFor="let m of listMembers">
+          <div class="card-transparent card-block card-stretch card-height">
+            <div class="card-body text-center p-0">
+              <div class="item">
+                <div class="odr-img">
+                  <img src="assets/images/user/01.jpg" class="img-fluid rounded-circle avatar-90 m-auto" alt="image">
+                </div>
+                <div class="odr-content rounded">
+                  <h4 class="mb-2">{{m.username}} {{m.firstname}} {{m.lastname}}</h4>
+                  <p class="mb-1">Developer Role {{m.role}}</p>
+                  <p class="mb-3">rubenfranci@gmail.com {{m.email}}</p>
+                  <ul class="list-unstyled mb-3">
+                    <li class="bg-secondary-light rounded-circle iq-card-icon-small mr-4"><i class="ri-user-2-line m-0"></i></li>
+                    <li class="bg-primary-light rounded-circle iq-card-icon-small mr-4"><i class="ri-file-user-fill m-0"></i></li>
+                    <li class="bg-success-light rounded-circle iq-card-icon-small"><i class="ri-user-unfollow-line m-0"></i></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page end  -->
+  </div>
+
+<!-- Wrapper End-->
+
+<div class="modal fade bd-example-modal-lg" role="dialog" aria-modal="true" id="new-user-modal">
+  <div class="modal-dialog  modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header d-block text-center pb-3 border-bttom">
+        <h3 class="modal-title" id="exampleModalCenterTitle02">New Employee</h3>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmit()" [formGroup]="formService.formGroupAddEmp" >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group mb-3">
+              <label for="exampleInputText2" class="h5">Full Name</label>
+              <input
+                formControlName="nameEmp"
+                [ngClass]="{ 'is-invalid':formService.nameEmp && formService.nameEmp.errors && formService.nameEmp.touched}"
+                type="text" class="form-control" id="exampleInputText2" placeholder="Enter your full name"/>
+              <div class="invalid-feedback" *ngIf="formService.nameEmp && formService.nameEmp.errors">
+                <div *ngIf="formService.nameEmp.errors.required">Please enter the name*</div>
+                <div *ngIf="formService.nameEmp.errors.minlength">The Name  must be at least 3 characters long*</div>
+                <div *ngIf="formService.nameEmp.errors.maxlength">The Name cannot exceed 20 characters*</div>
+              </div>
+              <div class="invalid-feedback" *ngIf="formService.nameEmp && formService.nameEmp.hasError('pattern')">
+                The age must be letters*
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group mb-3">
+              <label for="exampleInputText04" class="h5">Phone Number</label>
+              <input
+                [ngClass]="{ 'is-invalid':formService.phoneEmp && formService.phoneEmp.errors && formService.phoneEmp.touched}"
+                formControlName="phoneEmp"
+                type="text" class="form-control" id="exampleInputText04" placeholder="Enter phone number"
+              />
+              <div class="invalid-feedback" *ngIf="formService.phoneEmp && formService.phoneEmp.errors">
+                <div *ngIf="formService.phoneEmp.errors.required">Please enter phone patient*</div>
+                <div *ngIf="formService.phoneEmp.errors.minlength">The phone number must be at least 8 numbers*</div>
+                <div *ngIf="formService.phoneEmp.errors.maxlength">The phone number  cannot exceed 8 numbers*</div>
+
+              </div>
+              <div class="invalid-feedback" *ngIf="formService.phoneEmp && formService.phoneEmp.hasError('pattern')">
+                The phone number must be 8 digits*
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group mb-3">
+              <label for="exampleInputText006" class="h5">Email</label>
+              <input
+                [ngClass]="{ 'is-invalid':formService.emailEmp && formService.emailEmp.errors && formService.emailEmp.touched}"
+                formControlName="emailEmp"
+                type="text" class="form-control" id="exampleInputText006" placeholder="Enter your Email"
+              />
+              <div class="invalid-feedback" *ngIf="formService.emailEmp && formService.emailEmp.hasError('required')">
+                Please enter email patient*
+              </div>
+              <div class="invalid-feedback" *ngIf="formService.emailEmp && formService.emailEmp.hasError('email')">
+                The email must be a valid email address*
+            </div>
+          </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group mb-3">
+              <label for="exampleInputText0076" class="h5">Password</label>
+              <input
+                formControlName="passwordEmp"
+                [ngClass]="{ 'is-invalid':formService.passwordEmp && formService.passwordEmp.errors && formService.passwordEmp.touched}"
+                type="text" class="form-control" id="exampleInputText0076" placeholder="Enter your Password"/>
+              <div class="invalid-feedback" *ngIf="formService.passwordEmp && formService.passwordEmp.errors">
+                <div *ngIf="formService.passwordEmp.errors.required">Please enter the password*</div>
+                <div *ngIf="formService.passwordEmp.errors.minlength">The password  must be at least 3 characters long*</div>
+                <div *ngIf="formService.passwordEmp.errors.maxlength">the password cannot exceed 20 characters*</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="form-group mb-3">
+              <label for="exampleInputText2" class="h5">Role</label>
+              <select name="type" class="selectpicker form-control" data-style="py-0">
+                <option>Role</option>
+                <option>Designer</option>
+                <option>Developer</option>
+                <option>Manager</option>
+                <option>BDE</option>
+                <option>SEO</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="d-flex flex-wrap align-items-ceter justify-content-center mt-2">
+              <button class="btn btn-primary mr-3"  type="submit" data-dismiss="modal">Save</button>
+              <button class="btn btn-danger" (click)="onClear()" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

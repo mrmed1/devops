@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./GestionDeTachesFront
+    container_name: frontend
+    ports:
+      - 4200:80
+    networks:
+      - frontend_backend_network
+
+  backend:
+    build: ./TaskManagement
+    container_name: backend
+    ports:
+      - 8085:8085
+    networks:
+      - frontend_backend_network
+      - backend_db_network
+    depends_on:
+      - db
+    environment:
+      - DB_SERVER=db
+      - POSTGRES_DB=projectspring
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  db:
+    image: postgres:14
+    ports:
+      - 5532:5432
+    environment:
+       POSTGRES_USER: postgres
+       POSTGRES_PASSWORD: postgres
+       POSTGRES_DB: projectspring
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - backend_db_network
+
+networks:
+  frontend_backend_network:
+  backend_db_network:
+
+volumes:
+  db_data:
