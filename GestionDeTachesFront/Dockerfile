@@ -2,7 +2,7 @@ FROM node:16-alpine AS build
 WORKDIR /app
 COPY . .
 RUN npm install --legacy-peer-deps && \
-    npm run build
+    npm run build --base-href=/dev/
 FROM nginx:alpine
 EXPOSE 4200
 COPY --from=build /app/dist/* /usr/share/nginx/html/
