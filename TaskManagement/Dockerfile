@@ -1,14 +1,13 @@
 #
-# Build
+# Build and test stage
 #
 FROM maven:3.9.5-sapmachine-21 AS build
 RUN mkdir -p workspace
 WORKDIR workspace
 COPY pom.xml /workspace
 COPY src /workspace/src
-RUN mvn -f pom.xml clean install -DskipTests=true
-#RUN ./mvnw clean package -DskipTests
-#RUN mvn -f /home/app/pom.xml clean install -DskipTests=true
+RUN mvn -f pom.xml clean test install
+
 #
 # Package stage
 #

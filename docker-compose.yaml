@@ -38,6 +38,7 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - backend_db_network
+    command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
 
 networks:
   frontend_backend_network:
