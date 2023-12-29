@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {FormControlerService} from "../../Services/form-controles.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectService} from "../../Services/project.service";
 import {Projet} from "../../Models/projet";
 import {Task} from "../../Models/task";
 import {TaskService} from "../../Services/task.service";
+import {MemberService} from "../../Services/member.service";
 
 @Component({
   selector: 'app-project-details',
@@ -18,12 +19,16 @@ export class ProjectDetailsComponent implements OnInit {
   listTask: Task[] = new Array<Task>();
   task: Task = new Task();
   editTask: Task = new Task();
+  idMemberToAdd:number=0;
+
 
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
+              private memberService: MemberService,
               private route: ActivatedRoute,
               public formService: FormControlerService,
   ) {
+
   }
 
   ngOnInit(): void {
@@ -36,9 +41,12 @@ export class ProjectDetailsComponent implements OnInit {
       this.projectService.getProjectById(this.projetId).subscribe(data => {
         this.project = data as Projet;
         console.log('project  :', this.project);
-        this.listTask = this.project.tasks;
-        console.log('listTask  :', this.listTask);
-
+        this.taskService.getTasksByProjectId(this.projetId).subscribe(tasks => {
+          this.listTask=(tasks as Task[]).filter(task => task.archived === false);
+          console.log('listTask  :', this.listTask);
+        },error => {
+          console.log(error);
+        })
       });
     });
 
@@ -83,22 +91,49 @@ export class ProjectDetailsComponent implements OnInit {
     this.formService.formGroupAddTask.reset();
   }
 
-  assignTask(projectId: number, taskId: number) {
-    this.projectService.assignTask(projectId, taskId).subscribe(data => {
-      console.log('succses assign task');
+  assignLabelToTask(taskId: number,labelId: number,) {
+    this.taskService.assiggnLabelToTask(taskId,labelId).subscribe(data => {
+      console.log('succses assign label to task');
+      console.log('data : ',data);
       window.location.reload();
     });
 
   }
+markTaskAsDone(id:number){
+    this.taskService.markAsDone(id).subscribe(()=>{
+      console.log('task marked as done succesfully !');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
 
-  addMember(number: number) {
+    },error => {
+      console.log(error);
 
+    })
+
+
+}
+  addMember(idMember: number,idProject:number) {
+
+    this.memberService.affecterMemberToProject(idMember,idProject).subscribe(data => {
+      console.log('task deleted');
+      setTimeout(() => {
+        window.location.reload();
+      },1000)
+  },error => {
+      console.log(error);
+    })
   }
 
   getTaskById(id: any) {
     this.taskService.taskById(id).subscribe(data => {
         this.task = data as Task;
         console.log('task : ', this.task);
+      this.formService.formGroupAddTask.patchValue({
+        nameT: this.task.title,
+        descriptionT: this.task.description,
+        dateStartT:this.task.startDate,
+      });
       });
 
   }
@@ -116,17 +151,31 @@ export class ProjectDetailsComponent implements OnInit {
       this.editTask.description = this.formService.formGroupAddTask.value.descriptionT;
       this.editTask.title = this.formService.formGroupAddTask.value.nameT;
       this.editTask.projectId = this.projetId;
-      this.editTask.completed=true;
-
       console.log('task : ', this.editTask);
       this.taskService.updateTask(this.editTask).subscribe(data => {
         console.log('task updated');
-        window.location.reload();
+        setTimeout(() => {
+          //window.location.reload();
+        }, 1000);
       });
     } else {
       console.log("Invalid form");
       this.validateAllFormFields(this.formService.formGroupAddTask);
     }
   }
+
+  hideTask(id: any) {
+    this.taskService.hideTask(id).subscribe(()=>{
+      console.log('task hide succesfully !');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    },error => {
+      console.log(error);
+
+    })
+
+  }
+
 
 }

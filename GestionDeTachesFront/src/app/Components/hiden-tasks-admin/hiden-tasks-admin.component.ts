@@ -1,4 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {TaskService} from "../../Services/task.service";
+import {Task} from "../../Models/task";
+
 declare var $: any; // Import jQuery
 @Component({
   selector: 'app-hiden-tasks-admin',
@@ -6,12 +9,20 @@ declare var $: any; // Import jQuery
   styleUrls: ['./hiden-tasks-admin.component.css']
 })
 export class HidenTasksAdminComponent implements OnInit, AfterViewInit {
-  tasks: any[] = [];
-  constructor() { }
+  tasks: Task[] = [];
+  constructor(private taskService :TaskService,
+              ) { }
 
   ngOnInit(): void {
+    this.taskService.getAllTasks().subscribe(data => {
+      console.log('data : ', data);
+      this.tasks = (data as Task[]).filter(task => task.archived === true);
 
-    this.tasks = [
+    },error => {
+      console.log(error);
+    }    )
+
+  /*  this.tasks = [
       {
         "id": 1,
         "title": "Task 1",
@@ -44,7 +55,7 @@ export class HidenTasksAdminComponent implements OnInit, AfterViewInit {
         "projectId": 1,
         "projectName": "Sample Project"
       }
-    ]
+    ]*/
   }
 
   ngAfterViewInit(): void {
@@ -55,6 +66,13 @@ export class HidenTasksAdminComponent implements OnInit, AfterViewInit {
   }
 
   cancelHidden(id:number) {
+    this.taskService.fromTrashToListTask(id).subscribe(data =>{
+      console.log('data',data);
+      console.log('succesfull cancel hidden !')
+      setTimeout(()=>{
+     window.location.reload();
+      },1000)
+    })
 
   }
 }

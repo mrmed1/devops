@@ -20,7 +20,6 @@
                 <th>Due Date</th>
                 <th>Completed</th>
                 <th>Actions</th>
-                <!-- Add more columns as needed -->
               </tr>
               </thead>
               <tbody>
@@ -32,12 +31,12 @@
                 <td>{{ task.dueDate }}</td>
                 <td>{{ task.completed }}</td>
                 <td>
-                  <button class="btn btn-sm btn-primary " (click)="cancelHidden(task.id)"><i class="ri-eye-line pr-0"></i>Show</button>
+                  <a class="btn bg-secondary-light m-1" role="button" (click)="cancelHidden(task.id)"><i class="ri-eye-close-line m-1"></i>Restore</a>
                   </td>
-                <!-- Add more columns as needed -->
               </tr>
               </tbody>
-            </table>          </div>
+            </table>
+          </div>
         </div>
       </div>
     </div>

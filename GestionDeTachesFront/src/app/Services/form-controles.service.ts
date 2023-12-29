@@ -29,6 +29,7 @@ export class FormControlerService {
   formGroupAddEmp = this.fbAddEmp.group({
     nameEmp: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20),Validators.pattern('[a-zA-Z ]*')]],
     emailEmp: ['', [Validators.required, Validators.email]],
+    usernameEmp: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
     phoneEmp: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8),Validators.pattern('[0-9]*')]],
     passwordEmp: ['', [Validators.required,Validators.minLength(3), Validators.maxLength(20)]],
 
@@ -36,6 +37,9 @@ export class FormControlerService {
   /* add employee controle */
   get nameEmp() {
     return this.formGroupAddEmp.get('nameEmp');
+  }
+  get usernameEmp() {
+    return this.formGroupAddEmp.get('usernameEmp');
   }
   get emailEmp() {
     return this.formGroupAddEmp.get('emailEmp');

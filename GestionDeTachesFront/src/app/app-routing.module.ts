@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {ExtraOptions, RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./Components/home/home.component";
 import {ListprojetComponent} from "./Components/listprojet/listprojet.component";
 import {ListTasksComponent} from "./Components/list-tasks/list-tasks.component";
@@ -31,11 +31,14 @@ const routes: Routes = [
       {path:'listTasksParProject/:id',component:ListTaskParProjetComponent},
       {path:'listAllTasks',component:ListAllTasksUserComponent},
 
-
     ]},
 ];
+const extraOptions: ExtraOptions = {
+  onSameUrlNavigation: 'reload',
+  useHash:true
+};
 @NgModule({
-  imports: [RouterModule.forRoot(routes,{useHash:true})],
+  imports: [RouterModule.forRoot(routes,extraOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -5,7 +5,7 @@ import {HttpClient} from "@angular/common/http";
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl='http://localhost:8080/api/tasks';
+  private apiUrl='http://localhost:8085/api/tasks';
   constructor(private http: HttpClient) { }
   getAllTasks(){
     return this.http.get(this.apiUrl);
@@ -20,7 +20,7 @@ export class TaskService {
     return this.http.post(this.apiUrl,task);
   }
   markAsDone(taskId:any){
-    return this.http.put(this.apiUrl+'/'+taskId+'markAsCompleted',null);
+    return this.http.put(this.apiUrl+'/'+taskId+'/markAsCompleted',null);
   }
   assiggnLabelToTask(taskId:any,labelId:any){
     return this.http.put(this.apiUrl+'/'+taskId+'/assignLabel/'+labelId,null);

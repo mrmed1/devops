@@ -1,6 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-declare var $: any; // Import jQuery
-
+import {NavigationEnd, Router} from "@angular/router";
+import * as $ from 'jquery';
+import 'datatables.net';
+import 'datatables.net-dt';
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
@@ -8,7 +10,13 @@ declare var $: any; // Import jQuery
 })
 export class ListTasksComponent implements OnInit, AfterViewInit {
   tasks: any[] = [];
-  constructor() { }
+  constructor(private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.initializeDataTable();
+      }
+    });
+  }
 
   ngOnInit(): void {
 
@@ -20,6 +28,9 @@ export class ListTasksComponent implements OnInit, AfterViewInit {
         "startDate": "2023-12-20",
         "dueDate": "2023-12-27",
         "completed": false,
+        "level": 'High',
+        "periorty": 'Must',
+
         "labels": [
           {
             "id": 1,
@@ -36,6 +47,8 @@ export class ListTasksComponent implements OnInit, AfterViewInit {
         "startDate": "2023-12-20",
         "dueDate": "2023-12-27",
         "completed": false,
+        "level": 'Low',
+        "periorty": 'Will',
         "labels": [
           {
             "id": 2,
@@ -49,10 +62,15 @@ export class ListTasksComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.initializeDataTable();
+  }
+
+
+  initializeDataTable(): void {
     $.noConflict();
     $(document).ready(function() {
       $('#taskTable').DataTable();
     });
   }
-
+  protected readonly Date = Date;
 }
